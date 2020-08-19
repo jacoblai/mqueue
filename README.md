@@ -1,5 +1,11 @@
 # mqueue
 高性能http队列 每秒TPS达7万以上 （分时落盘，防丢失）
+
+wrk测试
+```
+wrk -t 16 -c 100 -d 30s --latency --timeout 5s -s post.lua http://localhost:8088/api/queue
+```
+测试结果
 ```
 Running 30s test @ http://localhost:8088/api/queue
   16 threads and 100 connections

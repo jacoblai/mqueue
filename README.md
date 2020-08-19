@@ -1,5 +1,5 @@
 # mqueue
-高性能http队列
+高性能http队列 每秒TPS达7万以上
 ```
 Running 30s test @ http://localhost:8088/api/queue
   16 threads and 100 connections

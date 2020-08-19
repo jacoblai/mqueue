@@ -1,5 +1,5 @@
 # mqueue
-高性能http队列 每秒TPS达7万以上
+高性能http队列 每秒TPS达7万以上 （分时落盘，防丢失）
 ```
 Running 30s test @ http://localhost:8088/api/queue
   16 threads and 100 connections

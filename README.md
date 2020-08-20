@@ -1,11 +1,11 @@
 # mqueue
 高性能http队列 每秒TPS达7万以上 （分时落盘，防丢失）
 
-wrk测试
+* wrk测试
 ```
 wrk -t 16 -c 100 -d 30s --latency --timeout 5s -s post.lua http://localhost:8088/api/queue
 ```
-测试结果
+* 测试结果
 ```
 Running 30s test @ http://localhost:8088/api/queue
   16 threads and 100 connections
@@ -21,3 +21,9 @@ Running 30s test @ http://localhost:8088/api/queue
 Requests/sec:  73235.09
 Transfer/sec:     22.63MB
 ```
+
+* 支持自动TTL删除功能，通过Query参数指定ttl，值为数值型/秒，到达指定时间后记录会自动被清除。
+```
+http://127.0.0.1:8088/api/queue?ttl=10
+```
+

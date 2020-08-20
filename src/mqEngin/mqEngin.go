@@ -35,7 +35,7 @@ func NewMqEngin(dir string) *MqEngin {
 	}
 	//初始化id
 	km.id = 0
-	db, err := yiyidb.OpenKvdb(dir+"/db", false, false, 8)
+	db, err := yiyidb.OpenKvdb(dir+"/db", false, true, 8)
 	if err != nil {
 		panic(err)
 	}
@@ -100,6 +100,12 @@ func (k *MqEngin) PeekQeueu(w http.ResponseWriter, r *http.Request, ps httproute
 func (k *MqEngin) EnQeueu(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	defer r.Body.Close()
 
+	tl := r.URL.Query().Get("ttl")
+	ttl, err := strconv.Atoi(tl)
+	if err != nil {
+		ttl = 0
+	}
+
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -107,7 +113,7 @@ func (k *MqEngin) EnQeueu(w http.ResponseWriter, r *http.Request, ps httprouter.
 	}
 
 	nid := k.idWroker.GetId()
-	err = k.localdb.Put(yiyidb.IdToKeyPure(nid), body, 0)
+	err = k.localdb.Put(yiyidb.IdToKeyPure(nid), body, ttl)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return

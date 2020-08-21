@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/jacoblai/httprouter"
+	"limit"
 	"log"
 	"mqEngin"
 	"net/http"
@@ -38,7 +39,7 @@ func main() {
 	router.GET("/api/queue/:id", mq.PeekQeueu)
 	router.DELETE("/api/queue/:id", mq.DelQeueu)
 
-	srv := &http.Server{Handler: cors.CORS(router), ErrorLog: nil}
+	srv := &http.Server{Handler: limit.Limit(cors.CORS(router)), ErrorLog: nil}
 	srv.Addr = *host
 	go func() {
 		if err = srv.ListenAndServe(); err != nil {

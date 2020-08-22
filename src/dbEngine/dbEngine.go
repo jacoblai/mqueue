@@ -95,6 +95,11 @@ func (k *DbEngin) EnDb(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 		return
 	}
 
+	if len(body) == 0 {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
 	nid := k.idWroker.GetId()
 	err = k.localdb.Put(yiyidb.IdToKeyPure(nid), body, ttl)
 	if err != nil {

@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 	"cors"
+	"dbEngine"
 	"flag"
 	"fmt"
 	"github.com/jacoblai/httprouter"
 	"limit"
 	"log"
-	"mqEngin"
 	"net/http"
 	"os"
 	"os/signal"
@@ -32,12 +32,12 @@ func main() {
 	log.SetOutput(os.Stdout)
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 
-	mq := mqEngin.NewMqEngin(dir)
+	db := dbEngine.NewDbEngin(dir)
 
 	router := httprouter.New()
-	router.POST("/api/queue", mq.EnQeueu)
-	router.GET("/api/queue/:id", mq.PeekQeueu)
-	router.DELETE("/api/queue/:id", mq.DelQeueu)
+	router.POST("/api/db", db.EnDb)
+	router.GET("/api/db/:id", db.PeekDb)
+	router.DELETE("/api/db/:id", db.DelDb)
 
 	srv := &http.Server{Handler: limit.Limit(cors.CORS(router)), ErrorLog: nil}
 	srv.Addr = *host
@@ -46,7 +46,7 @@ func main() {
 			log.Println(err)
 		}
 	}()
-	log.Println("server on port", *host)
+	log.Println("db server on port", *host)
 
 	signalChan := make(chan os.Signal, 1)
 	cleanupDone := make(chan bool)
@@ -60,7 +60,7 @@ func main() {
 				cleanup <- true
 			}()
 			<-cleanup
-			mq.Close()
+			db.Close()
 			fmt.Println("safe exit")
 			cleanupDone <- true
 		}

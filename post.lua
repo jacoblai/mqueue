@@ -1,3 +1,3 @@
 wrk.method = "POST"
-wrk.body  = '{"userId": "10001","coinType": "GT","type": "2","amount": "5.1"}'
+wrk.body   = '{"jsonrpc":"2.0","method":"cita_sendTransaction","params":["abcd"],"id":2}'
 wrk.headers["Content-Type"] = "application/json"

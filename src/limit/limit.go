@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-var limiter = rate.NewLimiter(92000, 92000)
+var limiter = rate.NewLimiter(100000, 100000)
 
 func Limit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
